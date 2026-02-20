@@ -72,6 +72,7 @@ public class MessagesControllerUnitTest {
 
     List<Message> messages = new ArrayList<>();
 
+    when(mockRequest.getHeader("isMemberOf")).thenReturn("group1;group2;");
     when(mockService.filteredMessages(any())).thenReturn(messages);
     Set<String> groups = new HashSet<>();
     groups.add("someGroup");
