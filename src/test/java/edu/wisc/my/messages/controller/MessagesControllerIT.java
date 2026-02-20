@@ -1,7 +1,7 @@
 package edu.wisc.my.messages.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.net.URL;
 import org.hamcrest.core.StringContains;
@@ -43,7 +43,6 @@ public class MessagesControllerIT {
   public void nonexistentPathYields404() throws Exception {
     ResponseEntity<String> response =
       template.getForEntity(base.toString() + "someGoofyPath", String.class);
-    assertEquals("Missing path should yield 404 not found response.",
-      404, response.getStatusCodeValue());
+    assertEquals(404, response.getStatusCodeValue(), "Missing path should yield 404 not found response.");
   }
 }

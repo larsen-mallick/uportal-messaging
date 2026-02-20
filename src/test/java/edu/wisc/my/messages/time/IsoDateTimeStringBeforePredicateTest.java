@@ -14,18 +14,17 @@ public class IsoDateTimeStringBeforePredicateTest {
 
   @Test
   public void nullEvaluatesFalse() {
-    assertFalse("Null shouldn't be considered before now.", beforeNowPredicate.test(null));
+    assertFalse(beforeNowPredicate.test(null), "Null shouldn't be considered before now.");
   }
 
   @Test
   public void emptyStringEvaluatesFalse() {
-    assertFalse("Empty string shouldn't be considered before now.", beforeNowPredicate.test(""));
+    assertFalse(beforeNowPredicate.test(""), "Empty string shouldn't be considered before now.");
   }
 
   @Test
   public void whitespaceStringEvaluatesFalse() {
-    assertFalse("Whitespace shouldn't be considered before now.",
-      beforeNowPredicate.test("\t   \t"));
+    assertFalse(beforeNowPredicate.test("\t   \t"), "Whitespace shouldn't be considered before now.");
   }
 
   @Test
@@ -37,8 +36,7 @@ public class IsoDateTimeStringBeforePredicateTest {
 
   @Test
   public void uwWasIncorporatedBeforeNow() {
-    assertTrue("July 26 1848 should be before now.",
-      beforeNowPredicate.test("1848-07-26"));
+    assertTrue(beforeNowPredicate.test("1848-07-26"), "July 26 1848 should be before now.");
   }
 
   /**
@@ -46,14 +44,12 @@ public class IsoDateTimeStringBeforePredicateTest {
    */
   @Test
   public void uwWasIncorporatedBeforeNowWhenTimeSpecific() {
-    assertTrue("July 26 1848 around 1p should be before now.",
-      beforeNowPredicate.test("1848-07-26T13:01:04"));
+    assertTrue(beforeNowPredicate.test("1848-07-26T13:01:04"), "July 26 1848 around 1p should be before now.");
   }
 
   @Test
   public void uwTercentenialIsNotBeforeNow() {
-    assertFalse("July 26 2148 should not be before now.",
-      beforeNowPredicate.test("2148-07-26"));
+    assertFalse(beforeNowPredicate.test("2148-07-26"), "July 26 2148 should not be before now.");
   }
 
   /**
@@ -62,8 +58,7 @@ public class IsoDateTimeStringBeforePredicateTest {
    */
   @Test
   public void uwTercentenialIsNotBeforeNowWhenTimeSpecific() {
-    assertFalse("July 26 2148 around 9a should not be before now.",
-      beforeNowPredicate.test("2148-07-26T09:05:32"));
+    assertFalse(beforeNowPredicate.test("2148-07-26T09:05:32"), "July 26 2148 around 9a should not be before now.");
   }
 
   /**
@@ -78,7 +73,7 @@ public class IsoDateTimeStringBeforePredicateTest {
     IsoDateTimeStringBeforePredicate beforeElevensies =
       new IsoDateTimeStringBeforePredicate(elevensies);
 
-    assertTrue(beforeElevensies.test(breakfastTime));
+    assertTrue(beforeElevensies.test(breakfastTime), "");
   }
 
   /**
@@ -93,7 +88,7 @@ public class IsoDateTimeStringBeforePredicateTest {
     IsoDateTimeStringBeforePredicate beforeBreakfast =
       new IsoDateTimeStringBeforePredicate(breakfastTime);
 
-    assertFalse(beforeBreakfast.test(elevensies));
+    assertFalse(beforeBreakfast.test(elevensies), "");
   }
 
 }

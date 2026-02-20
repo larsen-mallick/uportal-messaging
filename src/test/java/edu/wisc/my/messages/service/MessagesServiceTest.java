@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -239,7 +240,7 @@ public class MessagesServiceTest {
     assertNull(result);
   }
 
-  @Test(expected = IllegalStateException.class)
+  @Test
   public void throwsIllegalStateExceptionWhenMultipleMessagesMatchId() {
     MessagesService service = new MessagesService();
 
@@ -258,13 +259,17 @@ public class MessagesServiceTest {
 
     service.setMessageSource(messageSource);
 
-    Message result = service.messageById("not-so-unique-id");
+    assertThrows(IllegalStateException.class, () -> {
+      Message result = service.messageById("not-so-unique-id");
+    });
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void requestingMessageWithNullIdThrowsNPE() {
     MessagesService service = new MessagesService();
-    service.messageById(null);
+    assertThrows(NullPointerException.class, () -> {
+      service.messageById(null);
+    });
   }
 
 
@@ -313,7 +318,7 @@ public class MessagesServiceTest {
     assertEquals(matchingMessage, result);
   }
 
-  @Test(expected = ExpiredMessageException.class)
+  @Test
   public void userInAudienceCannotReadExpiredMessage()
     throws ForbiddenMessageException {
     MessagesService service = new MessagesService();
@@ -335,10 +340,12 @@ public class MessagesServiceTest {
 
     User user = new User();
 
-    Message result = service.messageByIdForUser("in-audience-of-this-expired-message", user);
+    assertThrows(ExpiredMessageException.class, () -> {
+      Message result = service.messageByIdForUser("in-audience-of-this-expired-message", user);
+    });
   }
 
-  @Test(expected = PrematureMessageException.class)
+  @Test
   public void userInAudienceCannotReadPrematureMessage()
     throws ForbiddenMessageException {
     MessagesService service = new MessagesService();
@@ -360,10 +367,12 @@ public class MessagesServiceTest {
 
     User user = new User();
 
-    Message result = service.messageByIdForUser("yes-in-audience-of-this-message", user);
+    assertThrows(PrematureMessageException.class, () -> {
+      Message result = service.messageByIdForUser("yes-in-audience-of-this-message", user);
+    });
   }
 
-  @Test(expected = UserNotInMessageAudienceException.class)
+  @Test
   public void userNotInAudienceCannotReadMessage()
     throws ForbiddenMessageException {
     MessagesService service = new MessagesService();
@@ -384,7 +393,9 @@ public class MessagesServiceTest {
 
     User user = new User();
 
-    Message result = service.messageByIdForUser("not-in-audience-of-this-message", user);
+    assertThrows(UserNotInMessageAudienceException.class, () -> {
+      Message result = service.messageByIdForUser("not-in-audience-of-this-message", user);
+    });
   }
 
 }

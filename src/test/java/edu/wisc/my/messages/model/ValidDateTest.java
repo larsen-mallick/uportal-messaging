@@ -14,8 +14,7 @@ public class ValidDateTest {
     message.setFilter(filter);
     String futureDate = "2100-12-31";
     filter.setGoLiveDate(futureDate);
-    assertFalse("Future go-live date without time specified should invalidate message.",
-      message.isValidToday());
+    assertFalse(message.isValidToday(), "Future go-live date without time specified should invalidate message.");
   }
 /*
   @Test
