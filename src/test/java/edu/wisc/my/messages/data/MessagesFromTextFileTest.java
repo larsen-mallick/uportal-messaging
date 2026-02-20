@@ -55,7 +55,5 @@ public class MessagesFromTextFileTest {
       messageReader.allMessages();
     });
   }
-    messageReader.allMessages();
-  }
 
 }
