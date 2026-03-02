@@ -1,10 +1,11 @@
 package edu.wisc.my.messages.time;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class IsoDateTimeStringAfterPredicateTest {
 
@@ -16,7 +17,7 @@ public class IsoDateTimeStringAfterPredicateTest {
    */
   @Test
   public void nullIsNotAfter() {
-    assertFalse(afterNow.test(null));
+    assertFalse(afterNow.test(null), "");
   }
 
   /**
@@ -24,7 +25,7 @@ public class IsoDateTimeStringAfterPredicateTest {
    */
   @Test
   public void emptyIsNotAfter() {
-    assertFalse(afterNow.test(""));
+    assertFalse(afterNow.test(""), "");
   }
 
   /**
@@ -32,35 +33,37 @@ public class IsoDateTimeStringAfterPredicateTest {
    */
   @Test
   public void whitespaceIsNotAfter() {
-    assertFalse(afterNow.test("\t     \t"));
+    assertFalse(afterNow.test("\t     \t"), "");
   }
 
   /**
    * Test that input that cannot be parsed results in RuntimeException.
    */
-  @Test(expected = RuntimeException.class)
+  @Test
   public void garbageThrows() {
-    afterNow.test("Garbage");
+    assertThrows(RuntimeException.class, () -> {
+      afterNow.test("Garbage");
+    });
   }
 
   @Test
   public void uwWasNotIncorporatedAfterNow() {
-    assertFalse(afterNow.test("1848-07-26"));
+    assertFalse(afterNow.test("1848-07-26"), "");
   }
 
   @Test
   public void uwWasNotIncorporatedAfterNowWhenTimeSpecified() {
-    assertFalse(afterNow.test("1848-07-26T13:45:22"));
+    assertFalse(afterNow.test("1848-07-26T13:45:22"), "");
   }
 
   @Test
   public void uwTercentenialIsAfterNow() {
-    assertTrue(afterNow.test("2148-07-26"));
+    assertTrue(afterNow.test("2148-07-26"), "");
   }
 
   @Test
   public void uwTercentenialIsAfterNowWhenTimeSpecified() {
-    assertTrue(afterNow.test("2148-07-26T04:17:32"));
+    assertTrue(afterNow.test("2148-07-26T04:17:32"), "");
   }
 
   @Test
@@ -72,7 +75,7 @@ public class IsoDateTimeStringAfterPredicateTest {
     IsoDateTimeStringAfterPredicate afterBreakfast =
       new IsoDateTimeStringAfterPredicate(breakfastTime);
 
-    assertTrue(afterBreakfast.test(elevensies));
+    assertTrue(afterBreakfast.test(elevensies), "");
   }
 
   @Test
@@ -84,7 +87,7 @@ public class IsoDateTimeStringAfterPredicateTest {
     IsoDateTimeStringAfterPredicate afterElevensies =
       new IsoDateTimeStringAfterPredicate(elevensies);
 
-    assertFalse(afterElevensies.test(breakfastTime));
+    assertFalse(afterElevensies.test(breakfastTime), "");
   }
 
 }
