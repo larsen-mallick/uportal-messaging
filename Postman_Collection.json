@@ -1,0 +1,385 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "uPortal Messaging API",
+    "description": "Collection for testing the uPortal Messaging microservice - a Spring Boot application for managing user notifications and announcements.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "12345678"
+  },
+  "item": [
+    {
+      "name": "User Messages",
+      "item": [
+        {
+          "name": "Get Messages for User (No Groups)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/messages",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "messages"
+              ]
+            },
+            "description": "Retrieve messages accessible to a user without any group memberships. Returns only messages with no group restrictions and valid dates."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Messages for User (Portal Administrators Group)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "isMemberOf",
+                "value": "Portal Administrators",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/messages",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "messages"
+              ]
+            },
+            "description": "Retrieve messages for a user who is a member of the 'Portal Administrators' group. Returns filtered messages based on group membership, date restrictions, and expiration."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Messages for User (Multiple Groups)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "isMemberOf",
+                "value": "Portal Administrators;Students;Faculty",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/messages",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "messages"
+              ]
+            },
+            "description": "Retrieve messages for a user who is a member of multiple groups (semicolon-delimited). Returns messages accessible to any of these group memberships."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Specific Message by ID (User Access)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "isMemberOf",
+                "value": "Portal Administrators",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/messages/demo-high-priority-valid-group-valid-date",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "messages",
+                "demo-high-priority-valid-group-valid-date"
+              ]
+            },
+            "description": "Retrieve a specific message by ID for a user. Returns the message only if user has access based on group membership and date restrictions."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin Messages",
+      "item": [
+        {
+          "name": "Get All Messages (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/admin/allMessages",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "admin",
+                "allMessages"
+              ]
+            },
+            "description": "Retrieve ALL messages in the system without any filtering. Administrator endpoint - returns all messages regardless of groups, dates, or expiration."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Specific Message by ID (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/admin/allMessages/demo-high-priority-valid-group-valid-date",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "admin",
+                "allMessages",
+                "demo-high-priority-valid-group-valid-date"
+              ]
+            },
+            "description": "Retrieve a specific message by ID from the admin endpoint. Returns the message regardless of group membership or date restrictions."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Test Cases",
+      "item": [
+        {
+          "name": "Test: High Priority Message (No Group, No Date)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/messages",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "messages"
+              ]
+            },
+            "description": "Test case: Should include 'demo-high-priority-no-group-no-date' message since it has no group restrictions and no date constraints."
+          },
+          "response": []
+        },
+        {
+          "name": "Test: Low Priority Message (No Group, No Date)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/messages",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "messages"
+              ]
+            },
+            "description": "Test case: Should include 'demo-low-priority-no-group-no-date' message since it has no group restrictions and no date constraints."
+          },
+          "response": []
+        },
+        {
+          "name": "Test: Group-Restricted Message (Without Membership)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/messages",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "messages"
+              ]
+            },
+            "description": "Test case: Should NOT include 'demo-low-priority-valid-group-no-date' message since user is not a member of 'Portal Administrators' group."
+          },
+          "response": []
+        },
+        {
+          "name": "Test: Group-Restricted Message (With Membership)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "isMemberOf",
+                "value": "Portal Administrators",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/messages",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "messages"
+              ]
+            },
+            "description": "Test case: Should include 'demo-low-priority-valid-group-no-date' message since user is a member of 'Portal Administrators' group."
+          },
+          "response": []
+        },
+        {
+          "name": "Test: Valid Date Range Message",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "isMemberOf",
+                "value": "Portal Administrators",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/messages",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "messages"
+              ]
+            },
+            "description": "Test case: Should include messages with valid date ranges (goLiveDate <= now <= expireDate). Example: 'demo-low-priority-valid-group-valid-date' (2016-01-01 to 2050-01-01)."
+          },
+          "response": []
+        },
+        {
+          "name": "Test: Expired Message (Excluded)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/messages",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "messages"
+              ]
+            },
+            "description": "Test case: Should NOT include message with ID '1' since it expired on 2018-08-14 (now is 2026-02-20)."
+          },
+          "response": []
+        },
+        {
+          "name": "Test: Message Not Found (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/messages/nonexistent-message-id",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "messages",
+                "nonexistent-message-id"
+              ]
+            },
+            "description": "Test case: Should return 404 Not Found error when requesting a message ID that doesn't exist."
+          },
+          "response": []
+        },
+        {
+          "name": "Test: Admin Gets All Messages Including Restricted",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/admin/allMessages",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "admin",
+                "allMessages"
+              ]
+            },
+            "description": "Test case: Admin endpoint should return ALL messages without filtering, including expired messages, group-restricted messages, and premature messages."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Health & Status",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/actuator/health",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "actuator",
+                "health"
+              ]
+            },
+            "description": "Spring Boot Actuator health check endpoint (if enabled). Returns application status."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "adminGroup",
+      "value": "Portal Administrators",
+      "type": "string"
+    },
+    {
+      "key": "multipleGroups",
+      "value": "Portal Administrators;Students;Faculty",
+      "type": "string"
+    }
+  ]
+}
